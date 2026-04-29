@@ -22,8 +22,6 @@
 - ✅ **AI 友善** —— 結構化、可被 Claude Code 直接消費
 - ✅ **逆向專用** —— 強制限制讀 source 的範圍、把不確定塞進 Open Questions，避免 AI 自行腦補
 
-本 skill **不引用、不依賴** [`flutter-conventions`](https://github.com/hey-jason404/flutter-conventions)。兩者完全解耦：本 skill 規定「spec 文件長什麼樣」，conventions 規定「Dart code 怎麼寫」。
-
 ---
 
 ## Skill 本體
