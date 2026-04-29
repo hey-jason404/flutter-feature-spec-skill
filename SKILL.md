@@ -151,6 +151,16 @@ Tell the user:
 - **Cross-domain warning** — if APIs come from ≥ 2 distinct Android
   packages, flag that this screen may need BLOCK extraction later. Do
   **not** auto-extract; just note it.
+- **Duplicate-extraction heuristic** — only run this check when the
+  total SCREEN count under `src/docs/use-cases/pages/` is **≥ 3**
+  (otherwise Rule of Three cannot fire). Grep existing SCREEN specs
+  for each API endpoint in the new spec. For any endpoint that
+  appears in **≥ 2 existing specs** (i.e. with this new one it would
+  hit ≥ 3), list it as a BLOCK extraction candidate with the SCREEN
+  IDs it shows up in, and ask the user whether to extract. Skip the
+  prompt entirely if no candidate hits the threshold — do **not**
+  produce a "no duplicates found" line, that is just noise. Still
+  **never** auto-extract.
 
 ## Extracting BLOCK / UC (Rule of Three)
 
