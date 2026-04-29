@@ -144,6 +144,54 @@ mkdir -p src/docs/use-cases/{pages,blocks,flows}
 
 ---
 
+## 6. 使用範例
+
+完成 §4–§5 後，直接在 Claude Code 對話中下指令即可，不需要喊 skill 名稱。
+
+### 範例 1：從 Android 逆向產出 SCREEN
+
+```
+請從 Android 逆向產出 SCREEN spec：
+- Fragment：app/src/main/java/com/app/login/LoginFragment.kt
+- ViewModel：app/src/main/java/com/app/login/LoginViewModel.kt
+```
+
+預期 Claude 行為：
+
+1. 讀上述兩個檔案 + 它們**直接**引用的 Repository / Retrofit interface（one hop）
+2. 回問 2–3 個關鍵問題（spec 類型確認、要保留 / 拋棄哪些 Android 行為、無法推論的 `TODO` / feature flag）
+3. 你回答後產出 `src/docs/use-cases/pages/SCREEN-XX_login.md`，frontmatter + 四節（📋 / 🧪 / 🔧 / ❓）齊全
+4. 不確定的事項全部進「❓ Open Questions」
+5. 自動更新 `src/docs/use-cases/README.md` 索引
+
+### 範例 2：更新已存在的 spec
+
+```
+LoginFragment 的邏輯改了，新的入口會帶一個 fromDeepLink 參數，
+請更新 SCREEN-01 對應的 spec。
+```
+
+預期：Claude 走 Step 0 update flow——先讀現有 spec、再讀 Android 改動、做差異補丁，**不重寫**、**不改 ID**，新的不確定塞進 Open Questions。
+
+### 範例 3：問 BLOCK 抽取（Rule of Three）
+
+```
+這個錢包餘額卡片在好幾個畫面都看到，要不要抽成 BLOCK？
+```
+
+預期：Claude 先 grep 所有 SCREEN spec，列出實際出現次數。少於 3 次會拒絕抽取，並告訴你目前在第幾次。
+
+### 觸發關鍵字
+
+下列任一條件 Claude 都會主動 invoke 此 skill：
+
+- 編輯 `src/docs/use-cases/` 底下的檔案
+- 提到 `SCREEN-XX` / `BLOCK-XX` / `UC-XX`
+- 給 Android `Activity` / `Fragment` / `ViewModel` / `Composable` 路徑並要求 Flutter spec
+- 問「這個畫面 / feature 該怎麼文件化」
+
+---
+
 ## 路徑與目錄約定
 
 本 skill 寫死下列路徑，不提供參數化：
